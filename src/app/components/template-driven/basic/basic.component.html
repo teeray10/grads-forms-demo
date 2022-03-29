@@ -6,7 +6,7 @@
       <nz-form-control>
         <input nz-input [(ngModel)]="username" name="user" required #user="ngModel" />
 
-        <div *ngIf="myForm.submitted">
+        <div *ngIf="user.touched || user.dirty">
           <span class="error" *ngIf="user.errors">Username is required</span>
         </div>
       </nz-form-control>
@@ -68,7 +68,7 @@
     <nz-form-item>
       <nz-form-control [nzOffset]="5" class="action-buttons">
         <button type="reset" nz-button nzType="primary">Reset</button>
-        <button type="submit" nz-button nzType="primary">Submit</button>
+        <button type="submit" nz-button nzType="primary" [disabled]="myForm.invalid">Submit</button>
       </nz-form-control>
     </nz-form-item>
 
