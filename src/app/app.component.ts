@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'forms-demo';
+  title = 'Grads Forms Demo';
+
+  tabs = [
+    { title: 'Template-Driven', routerLink: '/template-driven' },
+    { title: 'Reactive', routerLink: '/reactive'}
+  ]
 }

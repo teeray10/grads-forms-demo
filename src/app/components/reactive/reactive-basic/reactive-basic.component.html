@@ -1,0 +1,59 @@
+<div class="container">
+  <form nz-form [formGroup]="form" (reset)="initForm()" (submit)="submitForm()">
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Username</nz-form-label>
+      <nz-form-control>
+        <input nz-input formControlName="username" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Email</nz-form-label>
+      <nz-form-control nzErrorTip="Email is not valid">
+        <input nz-input formControlName="email" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Password</nz-form-label>
+      <nz-form-control nzErrorTip="Password is invalid">
+        <input nz-input type="password" formControlName="password" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Website</nz-form-label>
+      <nz-form-control nzErrorTip="Must start with 'https://' followed by a character">
+        <input nz-input formControlName="website" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Combination</nz-form-label>
+      <nz-form-control>
+        <input
+          nz-input
+          formControlName="combination"
+          name="mix"
+          minlength="6"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          required
+        />
+        <div *ngIf="combination?.touched || combination?.dirty">
+          <span *ngIf="combination?.hasError('pattern')" class="error">Invalid email</span>
+          <span *ngIf="combination?.hasError('minlength')" class="error"> MinLength is 6</span>
+          <span *ngIf="combination?.hasError('required')" class="error"> Input is required</span>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzOffset]="5" class="action-buttons">
+        <button type="reset" nz-button nzType="primary">Reset</button>
+        <button type="submit" nz-button nzType="primary" [disabled]="form.invalid">Submit</button>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+</div>

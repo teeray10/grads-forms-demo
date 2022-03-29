@@ -1,0 +1,76 @@
+<div class="container">
+  <form nz-form [formGroup]="form" (reset)="initForm()" (submit)="submitForm()">
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Employee Type</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <nz-select formControlName="selectedType" (ngModelChange)="onAccessLevelChanged($event)">
+          <nz-option *ngFor="let type of employeeTypes; trackBy: typeID" [nzValue]="type.id" [nzLabel]="type.label"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Employee No</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzErrorTip="Employee number is required">
+        <input nz-input formControlName="employeeNo" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Full Name</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzErrorTip="Full name is required">
+        <input nz-input formControlName="fullName"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Department</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzErrorTip="Department is required">
+        <input nz-input formControlName="department"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Nickname</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="nickname"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Age</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzErrorTip="Not in range">
+        <input nz-input formControlName="age"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <span class="contact-via">Contact Via:</span>
+      <label nz-checkbox formControlName="contactViaCellphone" (nzCheckedChange)="onContactMediumChanged(contactViaCellphone, cellphone, contactViaEmail)">Cellphone</label>
+      <label nz-checkbox formControlName="contactViaEmail" (nzCheckedChange)="onContactMediumChanged(contactViaEmail, email, contactViaCellphone)">Email</label>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Cellphone</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzErrorTip="Cellphone is required">
+        <input nz-input formControlName="cellphone"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Email</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzErrorTip="Email is required">
+        <input nz-input formControlName="email"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzOffset]="5" class="action-buttons">
+        <button type="reset" nz-button nzType="primary">Reset</button>
+        <button type="submit" nz-button nzType="primary" [disabled]="form.invalid">Submit</button>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+</div>

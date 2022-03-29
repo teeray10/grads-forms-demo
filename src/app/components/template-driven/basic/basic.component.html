@@ -1,0 +1,76 @@
+<div class="container">
+  <form nz-form #myForm="ngForm" (reset)="resetForm(myForm)" (submit)="submitForm(myForm)">
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Username</nz-form-label>
+      <nz-form-control>
+        <input nz-input [(ngModel)]="username" name="user" required #user="ngModel" />
+
+        <div *ngIf="myForm.submitted">
+          <span class="error" *ngIf="user.errors">Username is required</span>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Email</nz-form-label>
+      <nz-form-control>
+        <input nz-input [(ngModel)]="email" name="email" email required #myEmail="ngModel"/>
+
+        <div *ngIf="myEmail.touched || myEmail.dirty">
+          <span class="error" *ngIf="myEmail.hasError('email')">Invalid Email</span>
+          <span class="error" *ngIf="myEmail.hasError('required')">Email is required</span>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Password</nz-form-label>
+      <nz-form-control>
+        <input nz-input type="password" [(ngModel)]="password" name="password" required minlength="8" #pass="ngModel" />
+
+        <div *ngIf="pass.touched || pass.dirty">
+          <span class="error" *ngIf="pass.hasError('required')">Password is required</span>
+          <span class="error" *ngIf="pass.hasError('minlength')">Password must be at least 8 characters</span>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Website</nz-form-label>
+      <nz-form-control>
+        <input nz-input [(ngModel)]="website" name="pattern" pattern="https://.+" #myWebsite="ngModel"/>
+
+        <div *ngIf="myWebsite.touched || myWebsite.dirty">
+          <span class="error" *ngIf="myWebsite.errors">Must start with 'https://' followed by a character</span>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">Combination</nz-form-label>
+      <nz-form-control>
+        <input nz-input
+               [(ngModel)]="combination"
+               name="combo"
+               minlength="6"
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+               required
+               #combo="ngModel" />
+        <div *ngIf="combo.touched || combo.dirty">
+          <span *ngIf="combo.hasError('pattern')" class="error">Invalid email</span>
+          <span *ngIf="combo.hasError('minlength')" class="error"> MinLength is 6</span>
+          <span *ngIf="combo.hasError('required')" class="error"> Input is required</span>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzOffset]="5" class="action-buttons">
+        <button type="reset" nz-button nzType="primary">Reset</button>
+        <button type="submit" nz-button nzType="primary">Submit</button>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+</div>
