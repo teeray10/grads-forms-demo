@@ -4,7 +4,7 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="5">Employee Type</nz-form-label>
       <nz-form-control [nzSpan]="12">
-        <nz-select formControlName="selectedType" (ngModelChange)="onAccessLevelChanged($event)">
+        <nz-select formControlName="selectedType" (ngModelChange)="onEmployeeTypeChanged($event)">
           <nz-option *ngFor="let type of employeeTypes; trackBy: typeID" [nzValue]="type.id" [nzLabel]="type.label"></nz-option>
         </nz-select>
       </nz-form-control>
@@ -47,8 +47,14 @@
 
     <nz-form-item>
       <span class="contact-via">Contact Via:</span>
-      <label nz-checkbox formControlName="contactViaCellphone" (nzCheckedChange)="onContactMediumChanged(contactViaCellphone, cellphone, contactViaEmail)">Cellphone</label>
-      <label nz-checkbox formControlName="contactViaEmail" (nzCheckedChange)="onContactMediumChanged(contactViaEmail, email, contactViaCellphone)">Email</label>
+      <label nz-checkbox formControlName="contactViaCellphone"
+             (nzCheckedChange)="disableControl(getContactViaCellphoneControl().value, getContactViaEmailControl())">
+        Cellphone
+      </label>
+      <label nz-checkbox formControlName="contactViaEmail"
+             (nzCheckedChange)="disableControl(getContactViaEmailControl().value, getContactViaCellphoneControl())">
+        Email
+      </label>
     </nz-form-item>
 
     <nz-form-item>

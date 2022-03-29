@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'src/app/validators/CustomValidators';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-reactive-hr',
   templateUrl: './reactive-hr.component.html',
   styleUrls: ['./reactive-hr.component.scss']
 })
-export class ReactiveHrComponent implements OnInit {
+export class ReactiveHrComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject();
+
   employeeTypes = [
     { label: 'Contractor', id: 1 },
     { label: 'Permanent', id: 2 },
@@ -19,6 +23,12 @@ export class ReactiveHrComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.initSubscriptions();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   initForm(): void {
@@ -36,51 +46,66 @@ export class ReactiveHrComponent implements OnInit {
     });
   }
 
+  initSubscriptions(): void {
+    this.getContactViaCellphoneControl().valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(value => {
+      value ?
+        this.getCellphoneControl().setValidators(Validators.required) :
+        this.getCellphoneControl().clearValidators();
+
+      this.getCellphoneControl().updateValueAndValidity();
+    });
+
+    this.getContactViaEmailControl().valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(value => {
+      value ?
+        this.getEmailControl().setValidators(Validators.required) :
+        this.getEmailControl().clearValidators();
+
+      this.getEmailControl().updateValueAndValidity();
+    });
+  }
+
   submitForm(): void {
     // do something
   }
 
-  onAccessLevelChanged(accessLevel: number): void {
-    accessLevel === 1 ? this.form.get('employeeNo')?.disable() : this.form.get('employeeNo')?.enable();
+  onEmployeeTypeChanged(typeID: number): void {
+    typeID === 1 ? this.getEmployeeNoControl()?.disable() : this.getEmployeeNoControl()?.enable();
   }
 
-  // TODO: homework - clean this up using a custom validator
-  onContactMediumChanged(control: AbstractControl, controlToChange: AbstractControl, controlToDisable: AbstractControl): void {
-    if (!control || !controlToChange) {
-      return;
-    }
-
-    control.value ?
-      controlToChange.setValidators(Validators.required) :
-      controlToChange.clearValidators();
-
-    controlToChange.updateValueAndValidity();
-
-    this.disableControl(control.value, controlToDisable);
-  }
-
-  private disableControl(value: boolean, control: AbstractControl): void {
+  disableControl(value: boolean, controlToDisable: AbstractControl): void {
     value ?
-      control.disable() :
-      control.enable();
+      controlToDisable.disable() :
+      controlToDisable.enable();
   }
 
-  get cellphone(): AbstractControl {
+  /* GETTERS */
+
+  getCellphoneControl(): AbstractControl {
     return this.form.get('cellphone')!;
   }
 
-  get contactViaCellphone(): AbstractControl {
+  getContactViaCellphoneControl(): AbstractControl {
     return this.form.get('contactViaCellphone')!;
   }
 
-  get email(): AbstractControl {
+  getEmailControl(): AbstractControl {
     return this.form.get('email')!;
   }
 
-  get contactViaEmail(): AbstractControl {
+  getContactViaEmailControl(): AbstractControl {
     return this.form.get('contactViaEmail')!;
   }
 
+  getEmployeeNoControl(): AbstractControl {
+    return this.form.get('employeeNo')!;
+  }
+
+  /* TRACKBY */
+  
   typeID(index: number, type: any): number {
     return type.id;
   }
